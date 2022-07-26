@@ -54,6 +54,12 @@ def incomeNumber(lowerBorder = False, upperBorder = False, lowerBorderNumber = 0
                 if income_Number[:rzdtl_incomeNumber].isdigit() and income_Number[rzdtl_incomeNumber+1:].isdigit():
                     N_incomeNumber = int (income_Number[:rzdtl_incomeNumber])
                     F_incomeNumber = int (income_Number[rzdtl_incomeNumber+1:])
+
+                    if upperBorder and float(N_incomeNumber+F_incomeNumber/(10**len(income_Number[rzdtl_incomeNumber+1:])))*PositiveNegative > upperBorderNumber:
+                        continue
+
+                    if lowerBorder and float(N_incomeNumber+F_incomeNumber/(10**len(income_Number[rzdtl_incomeNumber+1:])))*PositiveNegative < lowerBorderNumber:
+                        continue
                     
                     if excludeZero and N_incomeNumber+F_incomeNumber == 0:
                         print("Введен 0. Введите положительное число. Повторите ввод.\n")
