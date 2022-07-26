@@ -18,7 +18,7 @@
 import random
 import math
 
-def incomeNumber(lowerBorder = False, upperBorder = False, lowerBorderNumber = 0, upperBorderNumber = 0, integerNumber = True, positiveOnly = True, excludeZero = False):
+def incomeNumber(integerNumber = True, positiveOnly = True, excludeZero = False):
 
     PositiveNegative = 1
     N_incomeNumber = 0
@@ -54,12 +54,6 @@ def incomeNumber(lowerBorder = False, upperBorder = False, lowerBorderNumber = 0
                 if income_Number[:rzdtl_incomeNumber].isdigit() and income_Number[rzdtl_incomeNumber+1:].isdigit():
                     N_incomeNumber = int (income_Number[:rzdtl_incomeNumber])
                     F_incomeNumber = int (income_Number[rzdtl_incomeNumber+1:])
-
-                    if upperBorder and float(N_incomeNumber+F_incomeNumber/(10**len(income_Number[rzdtl_incomeNumber+1:])))*PositiveNegative > upperBorderNumber:
-                        continue
-
-                    if lowerBorder and float(N_incomeNumber+F_incomeNumber/(10**len(income_Number[rzdtl_incomeNumber+1:])))*PositiveNegative < lowerBorderNumber:
-                        continue
                     
                     if excludeZero and N_incomeNumber+F_incomeNumber == 0:
                         print("Введен 0. Введите положительное число. Повторите ввод.\n")
@@ -171,12 +165,18 @@ def task3():
 def task4():
     print("4. Задайте список из N элементов, заполненных числами из промежутка [-N, N]. Найдите произведение элементов на указанных позициях. Позиции вводятся с клавиатуры.")
     print("Введите N.")
-    N_task4 = incomeNumber()
+    N_task4 = incomeNumber(True, True, True)
     list_task4 = []
     
     for i in range(0,N_task4):
         print("Введите {}-й элемент списка:".format(i+1))
-        list_task4.append(incomeNumber(True, True, -math.fabs(N_task4), math.fabs(N_task4), True, False))
+        while True:
+            number_task4 = incomeNumber(True, False)
+            if number_task4 >= -N_task4 and number_task4 <= N_task4:
+                break
+            else:
+                print("Введённое число не входит в множество [{}, {}]. Повторите ввод.".format(-N_task4, N_task4))
+        list_task4.append(number_task4)
 
 
     print("Ввод комбинаций - 2х позиций (от 1 до {} включительно) чисел 1го списка для умножения друг с другом".format(N_task4))
@@ -188,17 +188,20 @@ def task4():
 
     for i in range(0,Comb_task4):
         print("Введите {}-ю комбинацию чисел:".format(i+1))
+        print("Введите 1ю позицию комбинации.")
         while True:
-            try:
-                print("Введите 1ю позицию комбинации.")
-                num1_task4 = incomeNumber(False, True, 0, math.fabs(N_task4), True, True, True)
-                print("Введите 2ю позицию комбинации.")
-                num2_task4 = incomeNumber(False, True, 0, math.fabs(N_task4), True, True, True)
-                if num1_task4 < 1 or num2_task4 < 1:
-                    continue
+            num1_task4 = incomeNumber(True, True, True)
+            if num1_task4 > 0 and num1_task4 <= N_task4:
                 break
-            except:
-                print("Введите 2 числа типа integer.")
+            else:
+                print("Позиции за пределами списка. Повторите ввод.")
+        print("Введите 2ю позицию комбинации.")
+        while True:
+            num2_task4 = incomeNumber(True, True, True)
+            if num2_task4 > 0 and num2_task4 <= N_task4:
+                break
+            else:
+                print("Позиции за пределами списка. Повторите ввод.")
 
         Multi_list_task4.append(list_task4[num1_task4-1]*list_task4[num2_task4-1])
 
@@ -233,7 +236,7 @@ while True:
     "5 - Реализуйте алгоритм перемешивания списка.\n" +
     "6 - Выход из программы.\n")
 
-    tasks = incomeNumber(False, True, 0, 6, True, True, True)
+    tasks = incomeNumber(True, True, True)
 
     if tasks == 1:
         task1()
@@ -245,6 +248,6 @@ while True:
         task4()
     elif tasks == 5:
         task5()
-    else:
+    elif tasks == 6:
         print("Выход из программы")
         break
